@@ -1,0 +1,21 @@
+server:
+  port: 9006
+  undertow:
+    direct-buffers: true
+    io-threads: 4
+    worker-threads: 160
+spring:
+  application:
+    name: vecher-spit #吐槽模块
+  data:
+    mongodb:
+      host: 192.168.163.128
+      database: spitdb
+  redis:
+    host: 192.168.163.128
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka
+  instance:
+    prefer-ip-address: true

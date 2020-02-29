@@ -1,0 +1,27 @@
+server: 
+  port: 9008
+spring: 
+  application:  
+    name: vecher-user #指定服务名 用户注册模块
+  datasource:  
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.163.128:3306/tensquare_user?characterEncoding=UTF8
+    username: root
+    password: root
+  jpa: 
+    database: MySQL
+    show-sql: true
+  redis:
+    host: 192.168.163.128
+  rabbitmq:
+    host: 192.168.163.128
+jwt:
+  config:
+    key: vecher # token加盐的key
+    ttl: 3600000 # 多长时间过期
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka
+  instance:
+    prefer-ip-address: true

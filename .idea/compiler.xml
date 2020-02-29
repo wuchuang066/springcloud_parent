@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="vecher_eureka" />
+        <module name="vecher_spit" />
+        <module name="vecher_friend" />
+        <module name="vecher_common" />
+        <module name="vecher_user" />
+        <module name="vecher_search" />
+        <module name="vecher_base" />
+        <module name="vecher_article" />
+        <module name="vecher_managerzuul" />
+        <module name="vecher_recruit" />
+        <module name="vecher_config" />
+        <module name="vecher_gathering" />
+        <module name="vecher_sms" />
+        <module name="vecher_webzuul" />
+        <module name="vecher_qa" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="vecher_mongodb_demo" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="vecher_article" options="-parameters" />
+      <module name="vecher_base" options="-parameters" />
+      <module name="vecher_common" options="-parameters" />
+      <module name="vecher_config" options="-parameters" />
+      <module name="vecher_eureka" options="-parameters" />
+      <module name="vecher_friend" options="-parameters" />
+      <module name="vecher_gathering" options="-parameters" />
+      <module name="vecher_managerzuul" options="-parameters" />
+      <module name="vecher_mongodb_demo" options="-parameters" />
+      <module name="vecher_qa" options="-parameters" />
+      <module name="vecher_recruit" options="-parameters" />
+      <module name="vecher_search" options="-parameters" />
+      <module name="vecher_sms" options="-parameters" />
+      <module name="vecher_spit" options="-parameters" />
+      <module name="vecher_user" options="-parameters" />
+      <module name="vecher_webzuul" options="-parameters" />
+    </option>
+  </component>
+</project>

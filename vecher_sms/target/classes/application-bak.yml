@@ -1,0 +1,19 @@
+server:
+  port: 9009
+spring:
+  application:
+    name: vecher-sms # 发送短信模块
+  rabbitmq:
+    host: 192.168.163.128
+aliyun:
+  sms:
+    accessKeyId: LTAI4Fsgjq8d7Fn5DS7pMttZ
+    accesskeySecret: gfTCl3z9nYnEg2xGXlIlUZGxc1Y5tS
+    templateCode: SMS_183762504
+    signName: vecher论坛
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka
+  instance:
+    prefer-ip-address: true

@@ -1,0 +1,14 @@
+server:
+  port: 9007
+spring:
+  application:
+    name: vecher-search #搜索模块
+  data:
+    elasticsearch:
+      cluster-nodes: 192.168.163.128:9300
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka
+  instance:
+    prefer-ip-address: true

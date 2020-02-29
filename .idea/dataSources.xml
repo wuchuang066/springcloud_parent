@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="MySQL - tensquare_base@192.168.163.128" uuid="aaf3f083-3cd8-4847-9ee6-7b331776a2ad">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://192.168.163.128:3306/tensquare_base</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="tensquare_article@192.168.163.128" uuid="570616fc-b784-4cc8-a155-0ceadea9227f">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://192.168.163.128:3306/tensquare_article</jdbc-url>
+    </data-source>
+  </component>
+</project>

@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: vecher-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/vecher066_admin/vecher_springcloud.git
+          username: 18941166652
+          password: wu7502066
+  rabbitmq:
+    host: 192.168.163.128
+server:
+  port: 12000
+# 暴露触发消息总线的地址
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "bus-refresh" #  http://127.0.0.1:12000/actuator/bus-refresh  当在gitee（github）上面修改了配置文件
+        #以post方式访问下这个地址就可以了，就发送了一个mq消息 mq监听到这个消息 bus总线就自动编译当前模块了 改的配置就生效了
+        # 只适用于系统提供好的配置 如果自定义的配置名称  在用的类上面加一个注解@RefreshScope
