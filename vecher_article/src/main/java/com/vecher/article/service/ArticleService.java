@@ -1,28 +1,27 @@
 package com.vecher.article.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.vecher.article.dao.ArticleDao;
+import com.vecher.article.dao.ArticleMapper;
+import com.vecher.article.pojo.Article;
+import com.vecher.util.IdWorker;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.util.StringUtil;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
-
-import com.vecher.util.IdWorker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
-import com.vecher.article.dao.ArticleDao;
-import com.vecher.article.pojo.Article;
 
 /**
  * 服务层
@@ -35,6 +34,9 @@ public class ArticleService {
 
     @Autowired
     private ArticleDao articleDao;
+
+    @Autowired
+    private ArticleMapper articleMapper;
 
     @Autowired
     private IdWorker idWorker;
@@ -57,33 +59,72 @@ public class ArticleService {
      * @return
      */
     public List<Article> findAll() {
-        return articleDao.findAll();
+        return articleMapper.selectAll();
     }
 
     /**
      * 条件查询+分页
      *
-     * @param whereMap
+     * @param article
      * @param page
      * @param size
      * @return
      */
-    public Page<Article> findSearch(Map whereMap, int page, int size) {
-        Specification<Article> specification = createSpecification(whereMap);
-        PageRequest pageRequest = PageRequest.of(page - 1, size,Sort.by(Sort.Direction.ASC,"id")); // entity 中列名
-        return articleDao.findAll(specification, pageRequest);
+    public PageInfo<Article> findSearch(Article article, int page, int size) {
+        PageHelper.startPage(page, size);
+        Example example = new Example(Article.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id", article.getId());
+        criteria.andEqualTo("columnid", article.getColumnid());
+        criteria.andEqualTo("userid", article.getUserid());
+        if(!StringUtil.isEmpty(article.getTitle()))
+            criteria.andLike("title", "%" + article.getTitle() + "%");
+        if(!StringUtil.isEmpty(article.getContent()))
+            criteria.andLike("content", "%" + article.getContent() + "%");
+        if(!StringUtil.isEmpty(article.getImage()))
+            criteria.andLike("image", "%" + article.getImage() + "%");
+        criteria.andEqualTo("ispublic", article.getIspublic());
+        criteria.andEqualTo("istop", article.getIstop());
+        criteria.andEqualTo("visits", article.getVisits());
+        criteria.andEqualTo("thumbup", article.getThumbup());
+        criteria.andEqualTo("comment", article.getComment());
+        criteria.andEqualTo("state", article.getState());
+        criteria.andEqualTo("channelid", article.getChannelid());
+        criteria.andEqualTo("url", article.getUrl());
+        criteria.andEqualTo("type", article.getType());
+        List<Article> articles = this.articleMapper.selectByExample(example);
+        return new PageInfo<>(articles);
     }
 
 
     /**
      * 条件查询
      *
-     * @param whereMap
+     * @param article
      * @return
      */
-    public List<Article> findSearch(Map whereMap) {
-        Specification<Article> specification = createSpecification(whereMap);
-        return articleDao.findAll(specification);
+    public List<Article> findSearch(Article article) {
+        Example example = new Example(Article.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id", article.getId());
+        criteria.andEqualTo("columnid", article.getColumnid());
+        criteria.andEqualTo("userid", article.getUserid());
+        if(!StringUtil.isEmpty(article.getTitle()))
+        criteria.andLike("title", "%" + article.getTitle() + "%");
+        if(!StringUtil.isEmpty(article.getContent()))
+        criteria.andLike("content", "%" + article.getContent() + "%");
+        if(!StringUtil.isEmpty(article.getImage()))
+        criteria.andLike("image", "%" + article.getImage() + "%");
+        criteria.andEqualTo("ispublic", article.getIspublic());
+        criteria.andEqualTo("istop", article.getIstop());
+        criteria.andEqualTo("visits", article.getVisits());
+        criteria.andEqualTo("thumbup", article.getThumbup());
+        criteria.andEqualTo("comment", article.getComment());
+        criteria.andEqualTo("state", article.getState());
+        criteria.andEqualTo("channelid", article.getChannelid());
+        criteria.andEqualTo("url", article.getUrl());
+        criteria.andEqualTo("type", article.getType());
+        return this.articleMapper.selectByExample(example);
     }
 
     /**
@@ -96,7 +137,7 @@ public class ArticleService {
     public Article findById(String id) {
         Article article = (Article) redisTemplate.opsForValue().get("article_" + id);
         if (article == null) {
-            article = articleDao.findById(id).get();
+            article = articleMapper.selectByPrimaryKey(id);
             // 将当前文章信息存进redis 并设置十分钟过期时间
             redisTemplate.opsForValue().set("article_" + id, article, 60 * 10, TimeUnit.SECONDS);
         }
@@ -108,9 +149,9 @@ public class ArticleService {
      *
      * @param article
      */
-    public void add(Article article) {
+    public Integer add(Article article) {
         article.setId(idWorker.nextId() + "");
-        articleDao.save(article);
+       return articleMapper.insert(article);
     }
 
     /**
@@ -118,10 +159,10 @@ public class ArticleService {
      *
      * @param article
      */
-    public void update(Article article) {
+    public Integer update(Article article) {
         // 从缓存中删除
         redisTemplate.delete("article_" + article.getId());
-        articleDao.save(article);
+        return articleMapper.updateByPrimaryKey(article);
     }
 
     /**
@@ -129,10 +170,11 @@ public class ArticleService {
      *
      * @param id
      */
-    public void deleteById(String id) {
+    public Integer deleteById(String id) {
         // 从缓存中删除
         redisTemplate.delete("article_" + id);
-        articleDao.deleteById(id);
+        return articleMapper.deleteByPrimaryKey(id);
+
     }
 
     /**
