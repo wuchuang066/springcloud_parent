@@ -24,5 +24,4 @@ public class Label implements Serializable {
     // 是否推荐
     private String recommend;
 
-
 }

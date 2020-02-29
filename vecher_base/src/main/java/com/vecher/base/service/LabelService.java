@@ -3,7 +3,6 @@ package com.vecher.base.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
-import com.vecher.base.dao.LabelDao;
 import com.vecher.base.dao.LabelMapper;
 import com.vecher.base.pojo.Label;
 import com.vecher.util.IdWorker;
@@ -24,16 +23,10 @@ import java.util.List;
 @Transactional
 public class LabelService {
 
-    private LabelDao labelDao;
-
     private IdWorker idWorker;
 
     private LabelMapper labelMapper;
 
-    @Autowired
-    public void setLabelDao(LabelDao labelDao) {
-        this.labelDao = labelDao;
-    }
 
     @Autowired
     public void setIdWorker(IdWorker idWorker) {
