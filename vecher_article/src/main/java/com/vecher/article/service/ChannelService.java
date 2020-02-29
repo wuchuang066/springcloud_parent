@@ -1,14 +1,7 @@
 package com.vecher.article.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
+import com.vecher.article.dao.ChannelDao;
+import com.vecher.article.dao.ChannelMapper;
 import com.vecher.article.pojo.Channel;
 import com.vecher.util.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +9,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import com.vecher.article.dao.ChannelDao;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 服务层
@@ -32,6 +31,9 @@ public class ChannelService {
 
 	@Autowired
 	private ChannelDao channelDao;
+
+	@Autowired
+	private ChannelMapper channelMapper;
 	
 	@Autowired
 	private IdWorker idWorker;
@@ -41,7 +43,7 @@ public class ChannelService {
 	 * @return
 	 */
 	public List<Channel> findAll() {
-		return channelDao.findAll();
+		return channelMapper.selectAll();
 	}
 
 	
@@ -75,7 +77,7 @@ public class ChannelService {
 	 * @return
 	 */
 	public Channel findById(String id) {
-		return channelDao.findById(id).get();
+		return channelMapper.selectByPrimaryKey(id);
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class ChannelService {
 	 */
 	public void add(Channel channel) {
 		channel.setId( idWorker.nextId()+"" );
-		channelDao.save(channel);
+		channelMapper.insert(channel);
 	}
 
 	/**
@@ -92,7 +94,7 @@ public class ChannelService {
 	 * @param channel
 	 */
 	public void update(Channel channel) {
-		channelDao.save(channel);
+		channelMapper.updateByPrimaryKeySelective(channel);
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class ChannelService {
 	 * @param id
 	 */
 	public void deleteById(String id) {
-		channelDao.deleteById(id);
+		channelMapper.deleteByPrimaryKey(id);
 	}
 
 	/**

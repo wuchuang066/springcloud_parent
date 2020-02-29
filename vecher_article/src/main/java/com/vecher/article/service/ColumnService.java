@@ -1,14 +1,7 @@
 package com.vecher.article.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
+import com.vecher.article.dao.ColumnDao;
+import com.vecher.article.dao.ColumnMapper;
 import com.vecher.article.pojo.Column;
 import com.vecher.util.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +9,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import com.vecher.article.dao.ColumnDao;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 服务层
@@ -36,12 +35,15 @@ public class ColumnService {
 	@Autowired
 	private IdWorker idWorker;
 
+	@Autowired
+	private ColumnMapper columnMapper;
+
 	/**
 	 * 查询全部列表
 	 * @return
 	 */
 	public List<Column> findAll() {
-		return columnDao.findAll();
+		return columnMapper.selectAll();
 	}
 
 	
@@ -75,7 +77,7 @@ public class ColumnService {
 	 * @return
 	 */
 	public Column findById(String id) {
-		return columnDao.findById(id).get();
+		return columnMapper.selectByPrimaryKey(id);
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class ColumnService {
 	 */
 	public void add(Column column) {
 		column.setId( idWorker.nextId()+"" );
-		columnDao.save(column);
+		columnMapper.insertSelective(column);
 	}
 
 	/**
@@ -92,7 +94,7 @@ public class ColumnService {
 	 * @param column
 	 */
 	public void update(Column column) {
-		columnDao.save(column);
+		columnMapper.updateByPrimaryKeySelective(column);
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class ColumnService {
 	 * @param id
 	 */
 	public void deleteById(String id) {
-		columnDao.deleteById(id);
+		columnMapper.deleteByPrimaryKey(id);
 	}
 
 	/**
