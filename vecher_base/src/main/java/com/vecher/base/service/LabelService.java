@@ -1,21 +1,17 @@
 package com.vecher.base.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import com.vecher.base.dao.LabelDao;
+import com.vecher.base.dao.LabelMapper;
 import com.vecher.base.pojo.Label;
 import com.vecher.util.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +28,8 @@ public class LabelService {
 
     private IdWorker idWorker;
 
+    private LabelMapper labelMapper;
+
     @Autowired
     public void setLabelDao(LabelDao labelDao) {
         this.labelDao = labelDao;
@@ -42,71 +40,51 @@ public class LabelService {
         this.idWorker = idWorker;
     }
 
+    @Autowired
+    public void setLabelMapper(LabelMapper labelMapper) {
+        this.labelMapper = labelMapper;
+    }
+
     public List<Label> findAll() {
-        return labelDao.findAll();
+        return labelMapper.selectAll();
     }
 
     public Label findById(String id) {
-        return labelDao.findById(id).get();
+        return labelMapper.selectByPrimaryKey(id);
     }
 
     public void save(Label label) {
         // save也可以做更新,没有id是保存
         label.setId(idWorker.nextId() + "");
-        labelDao.save(label);
+        labelMapper.insertSelective(label);
     }
 
     public void update(Label label) {
-
-        labelDao.save(label);
+        labelMapper.updateByPrimaryKeySelective(label);
     }
 
     public void deleteById(String id) {
-        labelDao.deleteById(id);
+        labelMapper.deleteByPrimaryKey(id);
     }
 
     public List<Label> findSearch(Label label) {
-        return labelDao.findAll(new Specification<Label>() {
-            // 匿名内部类
-            @Override
-            public Predicate toPredicate(Root<Label> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> list = new ArrayList<>();
-
-                if (label.getLabelname() != null && !"".equals(label.getLabelname())) {
-                    Predicate predicate = criteriaBuilder.like(root.get("labelname").as(String.class), "%" + label.getLabelname() + "%");
-                    list.add(predicate);
-                }
-                if (label.getState() != null && !"".equals(label.getState())) {
-                    Predicate predicate = criteriaBuilder.equal(root.get("state").as(String.class), label.getState());
-                    list.add(predicate);
-                }
-                Predicate[] predicates = new Predicate[list.size()];
-                // 将list 里面数据放到数组里面
-                list.toArray(predicates);
-                return criteriaBuilder.and(predicates);
-            }
-        });
+        Example example = new Example(Label.class);
+        Example.Criteria criteria = example.createCriteria();
+        if (!StringUtil.isEmpty(label.getLabelname()))
+            criteria.andLike("labelname", "%" + label.getLabelname() + "%");
+        criteria.andEqualTo("state", label.getState());
+        return labelMapper.selectByExample(example);
     }
 
-    public Page<Label> pageQuery(Label label, Integer page, Integer size) {
+    public PageInfo<Label> pageQuery(Label label, Integer page, Integer size) {
         // 封装一个分页对象
-        Pageable pageable = PageRequest.of(page-1, size);
-        return labelDao.findAll(new Specification<Label>() {
-            @Override
-            public Predicate toPredicate(Root<Label> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                List<Predicate> list = new ArrayList<>();
-                if (label.getLabelname() != null && !"".equals(label.getLabelname())) {
-                    Predicate predicate = cb.like(root.get("labelname").as(String.class), "%" + label.getLabelname() + "%");
-                    list.add(predicate);
-                }
-                if (label.getState() != null && !"".equals(label.getState())) {
-                    Predicate predicate = cb.equal(root.get("state").as(String.class), label.getState());
-                    list.add(predicate);
-                }
-                Predicate[] parr = new Predicate[list.size()];
-                list.toArray(parr);
-                return cb.and(parr);
-            }
-        }, pageable);
+        Example example = new Example(Label.class);
+        Example.Criteria criteria = example.createCriteria();
+        if (!StringUtil.isEmpty(label.getLabelname()))
+            criteria.andLike("labelname", "%" + label.getLabelname() + "%");
+        criteria.andEqualTo("state", label.getState());
+        PageHelper.startPage(page, size);
+        List<Label> labels = labelMapper.selectByExample(example);
+        return new PageInfo<>(labels);
     }
 }

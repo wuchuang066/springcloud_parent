@@ -1,12 +1,12 @@
 package com.vecher.base.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.vecher.base.pojo.Label;
 import com.vecher.base.service.LabelService;
 import com.vecher.entity.PageResult;
 import com.vecher.entity.Result;
 import com.vecher.entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -99,9 +99,9 @@ public class LabelController {
                             @PathVariable Integer size,
                             @RequestBody Label label) {
 
-        Page<Label> pageData = labelService.pageQuery(label, page, size);
+        PageInfo<Label> pageInfo = labelService.pageQuery(label, page, size);
         return new Result(true, StatusCode.OK.getCode(), "查询成功",
-                new PageResult<Label>(pageData.getTotalElements(), pageData.getContent()));
+                new PageResult<Label>(pageInfo.getTotal(), pageInfo.getList()));
     }
 
 }
