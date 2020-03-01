@@ -17,7 +17,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties("jwt.config")
+@ConfigurationProperties("jwt.config")  // 读取调用模块里面的 jwt.config 属性的key 和ttl配置信息
 public class JwtUtil {
     // 加的盐
     private String key;
@@ -25,9 +25,8 @@ public class JwtUtil {
     // 过期时间 多长时间过期
     private long ttl;
 
-
     /**
-     *
+     * 创建token 信息 并在里面添加角色信息
      * @param id 用户登录的id
      * @param subobject 用户名
      * @param roles 角色信息
@@ -47,12 +46,16 @@ public class JwtUtil {
         return builder.compact();
     }
 
+    /**
+     * 解析token信息方法
+     * @param jwtStr
+     * @return
+     */
     public Claims parseJWT(String jwtStr) {
         return Jwts.parser()
                 .setSigningKey(key)
                 .parseClaimsJws(jwtStr)
                 .getBody();
     }
-
 
 }

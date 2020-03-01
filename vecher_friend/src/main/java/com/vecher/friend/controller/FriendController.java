@@ -2,7 +2,6 @@ package com.vecher.friend.controller;
 
 import com.vecher.entity.Result;
 import com.vecher.entity.StatusCode;
-import com.vecher.friend.client.UserClient;
 import com.vecher.friend.service.FriendService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +25,12 @@ public class FriendController {
     @Autowired
     private HttpServletRequest request;
 
-    @Autowired
-    private UserClient userClient;
-
     /**
      * 删除好友
      * @param friendid
      * @return
      */
+    @RequestMapping(value = "/{friendid}",method = RequestMethod.DELETE)
     public Result remove(@PathVariable String friendid) {
         Claims claims = (Claims) request.getAttribute("user_claims");
         if (claims == null) {

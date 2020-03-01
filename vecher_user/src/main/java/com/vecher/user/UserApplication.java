@@ -24,6 +24,10 @@ public class UserApplication {
         return new IdWorker(1, 1);
     }
 
+    /**
+     * 用于用户密码加密
+     * @return
+     */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

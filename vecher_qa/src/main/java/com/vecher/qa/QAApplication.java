@@ -3,14 +3,13 @@ import com.vecher.util.IdWorker;
 import com.vecher.util.JwtUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableDiscoveryClient // 发现服务
+//@EnableDiscoveryClient // 发现服务
 @EnableFeignClients    // 使用feign模式
 public class QAApplication {
 

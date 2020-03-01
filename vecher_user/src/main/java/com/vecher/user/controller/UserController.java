@@ -1,8 +1,5 @@
 package com.vecher.user.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.vecher.entity.PageResult;
 import com.vecher.entity.Result;
 import com.vecher.entity.StatusCode;
@@ -13,15 +10,11 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 控制器层
@@ -101,7 +94,6 @@ public class UserController {
         return new Result(true, StatusCode.OK.getCode(), "发送成功");
     }
 
-
     /**
      * 查询全部数据
      *
@@ -150,7 +142,7 @@ public class UserController {
 
     /**
      * 增加
-     *
+     * 目前这接口没用 在用户注册register 时候调用了service的方法
      * @param user
      */
     @RequestMapping(method = RequestMethod.POST)
@@ -181,24 +173,6 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Result delete(@PathVariable String id) {
         // 获取头信息
-//        String authHeader = httpServletRequest.getHeader("Authorization");
-//        if (StringUtils.isEmpty(authHeader)) {
-//            return new Result(false, StatusCode.ACCESS_ERROR, "权限不足");
-//        }
-//        if (!authHeader.startsWith("Bearer ")) {
-//            return new Result(false, StatusCode.ACCESS_ERROR, "权限不足");
-//        }
-//        // 提取Token
-//        String token = authHeader.substring(7);
-//        try {
-//            Claims claims = jwtUtil.parseJWT(token);
-//            String roles = (String) claims.get("roles");
-//            if (StringUtils.isEmpty(roles) || !"admin".equals(roles)) {
-//                return new Result(false, StatusCode.ACCESS_ERROR, "权限不足");
-//            }
-//        } catch (Exception e) {
-//            return new Result(false, StatusCode.ACCESS_ERROR, "权限不足");
-//        }
         Claims claims = (Claims) httpServletRequest.getAttribute("admin_claims");
         if (claims == null) {
             return new Result(false, StatusCode.ACCESS_ERROR.getCode(), "无权访问");

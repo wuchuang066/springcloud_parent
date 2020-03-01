@@ -1,23 +1,16 @@
 package com.vecher.qa.controller;
-import java.util.Map;
-
 import com.vecher.entity.PageResult;
 import com.vecher.entity.Result;
 import com.vecher.entity.StatusCode;
-import com.vecher.qa.client.BaseClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.vecher.qa.client.LabelClient;
 import com.vecher.qa.pojo.Problem;
 import com.vecher.qa.service.ProblemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * 控制器层
@@ -36,7 +29,7 @@ public class ProblemController {
 	private HttpServletRequest httpServletRequest;
 
 	@Autowired
-	private BaseClient baseClient;
+	private LabelClient labelClient;
 
 	@RequestMapping(value = "/newlist/{labelid}/{page}/{size}", method = RequestMethod.GET)
 	public Result newlist(@PathVariable String labelid,
@@ -136,11 +129,11 @@ public class ProblemController {
 	}
 	/**
 	 * 根据ID查询
-	 * @param labelid ID
+	 * @param labelid ID 远程调用 查找base里面的标签信息
 	 * @return
 	 */
 	@RequestMapping(value="/label/{labelid}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String labelid){
-		return baseClient.findById(labelid);
+		return labelClient.findById(labelid);
 	}
 }

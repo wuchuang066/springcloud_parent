@@ -17,8 +17,8 @@ public interface UserClient {
      * @param x
      */
     @RequestMapping(value = "/user/incfans/{userid}/{x}", method = RequestMethod.POST)
-    public void incFanscount(@PathVariable("userid") String userid, @PathVariable("x") int x);
+    void incFanscount(@PathVariable("userid") String userid, @PathVariable("x") int x);
 
     @RequestMapping(value = "/user/incfollow/{userid}/{x}", method = RequestMethod.POST)
-    public void incFollowcount(@PathVariable("userid") String userid, @PathVariable("x") int x);
+    void incFollowcount(@PathVariable("userid") String userid, @PathVariable("x") int x);
 }

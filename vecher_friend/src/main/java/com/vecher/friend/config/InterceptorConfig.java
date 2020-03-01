@@ -16,6 +16,7 @@ public class InterceptorConfig {
     private JwtInterceptor jwtInterceptor;
 
     public void addInterceptors(InterceptorRegistry registry) {
+        System.out.println("经过了拦截器");
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/**/login"); // 不拦截的登录地址

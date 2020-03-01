@@ -3,6 +3,7 @@ package com.vecher.manager.filter;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import com.vecher.entity.StatusCode;
 import com.vecher.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class ManagerFilter extends ZuulFilter {
             return null;
         }
         String url = request.getRequestURI();
-        if (url.indexOf("/admin/login") > 0) {
+        if (url.indexOf("/login") > 0) {
             System.out.println("登录界面" + url);
             return null;
         }
@@ -84,8 +85,10 @@ public class ManagerFilter extends ZuulFilter {
         requestContext.setSendZuulResponse(false);
         // http状态码，返回错误码
         requestContext.setResponseStatusCode(401);
-        requestContext.setResponseBody("无权访问");
-        requestContext.getResponse().setContentType("text/html;charset=UTF-8");
+        StringBuilder sb = new StringBuilder();
+        sb.append("{").append("\"flag\":"+true).append(",\"code\":"+StatusCode.ACCESS_ERROR.getCode()).append(",\"message\":\"权限不足\"").append("}");
+        requestContext.setResponseBody(sb.toString());
+        requestContext.getResponse().setContentType("application/json;charset=UTF-8");
         return null;
     }
 }

@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @description : 拦截器 拦截用户功能
+ * @description : 拦截器 拦截所有的路径 除了login
+ *  拦截之后首先进行验证头信息中是否含有特定的token信息
+ *  如果有 那么roles 是管理员还是用户  在将管理员和用户信息设置到HttpServletRequest 中
+ *  后期 如果功能有权限相关的 直接从request 中取在这个用户信息即可
  **/
 @Component
 public class JwtInterceptor extends HandlerInterceptorAdapter {
@@ -24,7 +27,6 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             final String token = authHeader.substring(7);
-
             try {
                 Claims claims = jwtUtil.parseJWT(token);
                 String roles = (String) claims.get("roles");
@@ -42,5 +44,4 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
         }
         return true;
     }
-
 }

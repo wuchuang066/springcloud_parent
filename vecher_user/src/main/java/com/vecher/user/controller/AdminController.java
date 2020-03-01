@@ -1,7 +1,4 @@
 package com.vecher.user.controller;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.vecher.entity.PageResult;
 import com.vecher.entity.Result;
 import com.vecher.entity.StatusCode;
@@ -10,13 +7,10 @@ import com.vecher.user.service.AdminService;
 import com.vecher.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 控制器层
@@ -30,9 +24,6 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
-
-	@Autowired
-	private BCryptPasswordEncoder encoder;
 
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -102,7 +93,7 @@ public class AdminController {
     }
 	
 	/**
-	 * 增加
+	 * 添加管理员 密码使用encoder 加密 那么登录时候就需要用加密之后的密码进行比对
 	 * @param admin
 	 */
 	@RequestMapping(method=RequestMethod.POST)
