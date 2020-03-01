@@ -1,0 +1,25 @@
+server: 
+  port: 9003
+spring: 
+  application:  
+    name: vecher-qa #指定服务名 问答模块
+  datasource:  
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.163.128:3306/tensquare_qa?characterEncoding=UTF8
+    username: root
+    password: root
+  jpa: 
+    database: MySQL
+    show-sql: true
+jwt:
+  config:
+    key: vecher # token加盐的key
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka
+  instance:
+    prefer-ip-address: true
+feign:
+  hystrix:
+    enabled: true
