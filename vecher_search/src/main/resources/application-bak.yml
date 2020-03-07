@@ -6,6 +6,8 @@ spring:
   data:
     elasticsearch:
       cluster-nodes: 192.168.163.128:9300
+      repositories:
+        enabled: true
 eureka:
   client:
     service-url:
