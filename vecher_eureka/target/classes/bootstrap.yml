@@ -1,7 +1,0 @@
-spring:
-  cloud:
-    config:
-      name: eureka #配置中心服务器上-前面的名字
-      profile: dev #配置中心服务器上-后面的名字
-      label: master #分支信息
-      uri: http://192.168.163.128:12000
