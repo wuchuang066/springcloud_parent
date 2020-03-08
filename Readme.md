@@ -3,4 +3,4 @@
 # 随后在启动其他任意微服务
  刷新配置文件的url： http://127.0.0.1:12000/actuator/bus-refresh 
  修改
- # 代码同步提交到gitee1
+ # 代码同步提交到gitee
