@@ -64,11 +64,11 @@
             <version>1.2.10</version>
         </dependency>
         <!-- tk-->
-<!--        <dependency>-->
-<!--            <groupId>tk.mybatis</groupId>-->
-<!--            <artifactId>mapper-spring-boot-starter</artifactId>-->
-<!--            <version>RELEASE</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>2.1.5</version>
+        </dependency>
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper</artifactId>
